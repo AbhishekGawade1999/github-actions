@@ -15,4 +15,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: install packages
+        run: |
+          pip install -r requirements.txt .;
+          python3 time.py;
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: current_time_ist.txt
+          path: current_time_ist.txt
+          
     
