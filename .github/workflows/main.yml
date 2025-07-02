@@ -1,0 +1,30 @@
+name: aws-test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-file-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create file
+        run: |
+          echo 'Prajakta' > name.txt
+      - name: upload file
+        uses: actions/upload-artifact@v4
+        with:
+          name: prajakta
+          path: name.txt
+
+  configure-aws:
+    runs-on: ubuntu-latest
+    steps:
+    - name: download file
+      uses: actions/download-artifact@v4
+      with:
+        name: prajakta
+        path: .
+    - name: list files
+      run: rm -rf name.txt && ls -lart
