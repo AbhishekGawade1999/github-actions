@@ -36,7 +36,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET }}
-        aws-region: us-east-1
+        # aws-region: us-east-1
     - name: upload to s3
       run: aws s3 cp name.txt s3://mybucket-12345678900987654321/name.txt
       
