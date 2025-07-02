@@ -22,10 +22,12 @@ jobs:
     needs: create-file-job
     runs-on: ubuntu-latest
     steps:
+    - name: remove files
+      run: rm -rf name.txt
     - name: download file
       uses: actions/download-artifact@v4
       with:
         name: prajakta
         path: .
     - name: list files
-      run: rm -rf name.txt && ls -lart
+      run: ls -lart
