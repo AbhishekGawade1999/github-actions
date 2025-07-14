@@ -1,0 +1,8 @@
+name: testJson
+on: [push]
+
+jobs:
+  check-json:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'comment ${{ github.event }}'
