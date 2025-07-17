@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Build an image from Dockerfile
-        run: docker pull ubuntu:utopic-20150319
+        run: docker pull ubuntu:oracular-20240617
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: 'ubuntu:utopic-20150319'
+          image-ref: 'ubuntu:oracular-20240617'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
