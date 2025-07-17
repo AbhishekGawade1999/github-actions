@@ -9,6 +9,7 @@ jobs:
     name: Build
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4 
       - name: Build an image from Dockerfile
         run: docker pull ubuntu:oracular-20240617
       - name: Run Trivy vulnerability scanner
