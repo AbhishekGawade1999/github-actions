@@ -9,6 +9,7 @@ jobs:
       - run: env | sort
       - run: echo "RANDOM_ENV=1234" >> "$GITHUB_ENV"
       - run: echo "${{ env.RANDOM_ENV }}"
+      - run: echo "RANDOM_ENV==1234" >> "$GITHUB_ENV"
       - run: env | sort
 
   tryingToPringRandomEnv:
