@@ -17,4 +17,4 @@ jobs:
     runs-on: ubuntu-latest
     needs: creatingCustomEnvVariable
     steps:
-      - run: echo "${{ needs.outputs.RANDOM_PASSWORD }}"
+      - run: echo "${{ needs.creatingCustomEnvVariable.outputs.RANDOM_PASSWORD }}"
