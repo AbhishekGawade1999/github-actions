@@ -1,0 +1,11 @@
+name: enableContainer
+
+on: [push]
+
+jobs:
+  creatingCustomEnvVariable:
+    runs-on: ubuntu-latest
+    container:
+      image: java:latest
+    steps:
+      - run: java --version
