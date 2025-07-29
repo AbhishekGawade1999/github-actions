@@ -6,6 +6,6 @@ jobs:
   creatingCustomEnvVariable:
     runs-on: ubuntu-latest
     container:
-      image: java:latest
+      image: openjdk:26-slim
     steps:
       - run: java --version
