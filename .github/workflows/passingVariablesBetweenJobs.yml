@@ -1,0 +1,20 @@
+name: passingVariablesBetweenJobs
+
+on: [push]
+
+jobs:
+  creatingCustomEnvVariable:
+    runs-on: ubuntu-latest
+    outputs:
+      RANDOM_PASSWORD: ${{ env.RANDOM_ENV }}
+    steps:
+      - run: env | sort
+      - run: echo "RANDOM_ENV=1234" >> "$GITHUB_ENV"
+      - run: echo "${{ env.RANDOM_ENV }}"
+      - run: env | sort
+
+  tryingToPringRandomEnv:
+    runs-on: ubuntu-latest
+    needs: creatingCustomEnvVariable
+    steps:
+      - run: echo "${{ needs.outputs.RANDOM_PASSWORD }}"
