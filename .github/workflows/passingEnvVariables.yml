@@ -1,0 +1,19 @@
+name: passingEnvVariables
+
+on: [push]
+
+jobs:
+  creatingCustomEnvVariable:
+    runs-on: ubuntu-latest
+    steps:
+      - run: env | sort
+      - run: echo "RANDOM_ENV:1234" >> "$GITHUB_ENV"
+      - run: echo "${{ env.RANDOM_ENV }}"
+      - run: env | sort
+
+  tryingToPringRandomEnv:
+    runs-on: ubuntu-latest
+    steps:
+      - run: env | sort
+      - run: echo "${{ env.RANDOM_ENV }}"
+      - run: env | sort
