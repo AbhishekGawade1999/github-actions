@@ -87,4 +87,5 @@ if not all_jobs.empty:
                 for url in new_urls:
                     f.write(url + "\n")
         else:
+            send_telegram_msg(f"NO NEW JOBS FOUND - ({datetime.now().strftime('%H:%M')})")
             print("No new unique jobs found in this run.")
