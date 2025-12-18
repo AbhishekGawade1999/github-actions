@@ -37,7 +37,7 @@ for place in places:
     for role in roles:
         try:
             jobs = scrape_jobs(
-                site_name=["indeed", "linkedin", "zip_recruiter", "google", "glassdoor", "bayt", "naukri", "bdjobs"],
+                site_name=["indeed", "linkedin"],
                 search_term=role,
                 location=place,
                 google_search_term=f"{role} jobs near {place} since yesterday",
