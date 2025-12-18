@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from jobspy import scrape_jobs
 import os
+from datetime import datetime
 
 # --- Configuration ---
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
@@ -9,8 +10,15 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 DB_FILE = "notified_jobs.txt"
 
 def send_telegram_msg(message):
+    if not message:
+        return
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    payload = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "HTML"}
+    payload = {
+        "chat_id": TELEGRAM_CHAT_ID, 
+        "text": message, 
+        "parse_mode": "HTML",
+        "disable_web_page_preview": True # Keeps the message compact
+    }
     requests.post(url, json=payload)
 
 # 1. Load already notified jobs
@@ -21,7 +29,7 @@ else:
     notified_urls = set()
 
 # 2. Scrape Jobs
-roles = ["DevOps", "devops", "SRE", "Site Reliability Engineer"]
+roles = ["DevOps", "SRE", "Site Reliability Engineer"]
 all_jobs = pd.DataFrame()
 
 for role in roles:
@@ -38,7 +46,7 @@ for role in roles:
     except Exception as e:
         print(f"Error scraping {role}: {e}")
 
-# 3. Filter and Deduplicate
+# 3. Filter and Build Batch Message
 if not all_jobs.empty:
     all_jobs.drop_duplicates(subset=['job_url'], keep='first', inplace=True)
     
@@ -49,23 +57,34 @@ if not all_jobs.empty:
         all_jobs['title'] = all_jobs['title'].fillna('')
         filtered_jobs = all_jobs[all_jobs['title'].str.contains(pattern, case=False, na=False)]
         
-        new_notifications = []
+        new_urls = []
+        # Header for the single message
+        message_body = f"<b>🔍 New Jobs Found ({datetime.now().strftime('%H:%M')})</b>\n"
+        message_body += "—" * 15 + "\n\n"
         
+        found_new = False
         for _, job in filtered_jobs.iterrows():
             url = job.get('job_url')
             if url not in notified_urls:
-                # Format message
-                msg = (
-                    f"🚀 <b>New Job Alert!</b>\n\n"
-                    f"<b>Pos:</b> {job.get('title')}\n"
-                    f"<b>Co:</b> {job.get('company')}\n"
-                    f"<b>Loc:</b> {job.get('location')}\n"
-                    f"🔗 <a href='{url}'>Apply Here</a>"
-                )
-                send_telegram_msg(msg)
-                new_notifications.append(url)
+                found_new = True
+                # Clean up data
+                title = job.get('title', 'N/A')[:40] # Truncate long titles
+                company = job.get('company', 'N/A')
+                
+                # Add to the big message string
+                message_body += f"<b>💼 {title}</b>\n"
+                message_body += f"🏢 {company}\n"
+                message_body += f"🔗 <a href='{url}'>View Job</a>\n\n"
+                
+                new_urls.append(url)
 
-        # 4. Save new URLs back to the file
-        with open(DB_FILE, "a") as f:
-            for url in new_notifications:
-                f.write(url + "\n")
+        if found_new:
+            # 4. Send the single batched message
+            send_telegram_msg(message_body)
+
+            # 5. Save new URLs back to the file
+            with open(DB_FILE, "a") as f:
+                for url in new_urls:
+                    f.write(url + "\n")
+        else:
+            print("No new unique jobs found in this run.")
