@@ -30,21 +30,24 @@ else:
 
 # 2. Scrape Jobs
 roles = ["DevOps", "SRE", "Site Reliability Engineer"]
+places = ["Pune, Maharashtra, India", "Pune/Pimpri-Chinchwad Area"]
 all_jobs = pd.DataFrame()
 
-for role in roles:
-    try:
-        jobs = scrape_jobs(
-            site_name=["linkedin"],
-            search_term=role,
-            location="Pune, Maharashtra, India",
-            results_wanted=15,
-            hours_old=4,
-            country_indeed='india'
-        )
-        all_jobs = pd.concat([all_jobs, jobs], ignore_index=True)
-    except Exception as e:
-        print(f"Error scraping {role}: {e}")
+for place in places:
+    for role in roles:
+        try:
+            jobs = scrape_jobs(
+                site_name=["indeed", "linkedin", "zip_recruiter", "google", "glassdoor", "bayt", "naukri", "bdjobs"],
+                search_term=role,
+                location=place,
+                google_search_term=f"{role} jobs near {place} since yesterday",
+                results_wanted=15,
+                hours_old=4,
+                country_indeed='india'
+            )
+            all_jobs = pd.concat([all_jobs, jobs], ignore_index=True)
+        except Exception as e:
+            print(f"Error scraping {role}: {e}")
 
 # 3. Filter and Build Batch Message
 if not all_jobs.empty:
