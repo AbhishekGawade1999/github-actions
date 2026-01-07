@@ -42,7 +42,7 @@ for place in places:
                 location=place,
                 google_search_term=f"{role} jobs near {place} since yesterday",
                 results_wanted=15,
-                hours_old=4,
+                hours_old=168,
                 country_indeed='india'
             )
             all_jobs = pd.concat([all_jobs, jobs], ignore_index=True)
