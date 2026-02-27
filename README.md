@@ -16,9 +16,8 @@ The **Telegram Job Alerts** workflow runs a Python-based job scraper and notifie
 - **Python Packages**: Installs `python-jobspy` (for scraping jobs), `pandas` (for data processing), and `requests` (for sending Telegram messages).
 
 ### Required GitHub Secrets
-To run the scraper and send notifications, the following secrets must be configured in your repository settings (`Settings > Secrets and variables > Actions`):
+To run the scraper and send notifications, the following secret must be configured in your repository settings (`Settings > Secrets and variables > Actions`):
 - `TELEGRAM_TOKEN`: The API token for your Telegram bot (obtained from BotFather).
-- `TELEGRAM_CHAT_ID`: The ID of the Telegram chat or channel where the bot will send the alerts.
 
 ### State Management
 To prevent duplicate notifications for jobs that have already been sent, the workflow tracks the state using a file named `notified_jobs.txt`.

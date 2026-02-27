@@ -6,20 +6,28 @@ from datetime import datetime
 
 # --- Configuration ---
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+# Add your Telegram Chat IDs here
+TELEGRAM_CHAT_IDS = [
+    "642821661",
+    "7196865875",
+]
 DB_FILE = "notified_jobs.txt"
 
 def send_telegram_msg(message):
     if not message:
         return
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    payload = {
-        "chat_id": TELEGRAM_CHAT_ID, 
-        "text": message, 
-        "parse_mode": "HTML",
-        "disable_web_page_preview": True # Keeps the message compact
-    }
-    requests.post(url, json=payload)
+    for chat_id in TELEGRAM_CHAT_IDS:
+        payload = {
+            "chat_id": chat_id, 
+            "text": message, 
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True # Keeps the message compact
+        }
+        try:
+            requests.post(url, json=payload)
+        except Exception as e:
+            print(f"Failed to send message to {chat_id}: {e}")
 
 # 1. Load already notified jobs
 if os.path.exists(DB_FILE):
