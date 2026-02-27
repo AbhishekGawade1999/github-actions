@@ -29,8 +29,8 @@ else:
     notified_urls = set()
 
 # 2. Scrape Jobs
-roles = ["DevOps", "SRE", "Site Reliability Engineer"]
-places = ["Pune, Maharashtra, India", "Pune/Pimpri-Chinchwad Area"]
+roles = ["Java Developer", "Backend Java Developer", "Software Engineer", "Actimize Developer", "Nice Actimize Developer"]
+places = ["Pune, Maharashtra, India", "Pune/Pimpri-Chinchwad Area", "Mumbai, Maharashtra, India", "Mumbai Metropolitan Region", "Bengaluru, Karnataka, India", "Greater Bengaluru Area"]
 all_jobs = pd.DataFrame()
 
 for place in places:
