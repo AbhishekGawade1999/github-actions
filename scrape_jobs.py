@@ -42,7 +42,7 @@ for place in places:
                 location=place,
                 google_search_term=f"{role} jobs near {place} since yesterday",
                 results_wanted=15,
-                hours_old=240,
+                hours_old=24,
                 country_indeed='india'
             )
             all_jobs = pd.concat([all_jobs, jobs], ignore_index=True)
@@ -53,7 +53,7 @@ for place in places:
 if not all_jobs.empty:
     all_jobs.drop_duplicates(subset=['job_url'], keep='first', inplace=True)
     
-    keywords = ['DevOps', 'dev ops', 'devops', 'sre', 'SRE', 'Site Reliability', 'DevSecOps']
+    keywords = ['java', 'Java', 'Actimize', 'actimize', 'Actimize Developer', 'Nice Actimize Developer']
     pattern = '|'.join(keywords)
     
     if 'title' in all_jobs.columns:
